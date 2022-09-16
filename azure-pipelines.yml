@@ -51,6 +51,7 @@ stages:
     - deployment: Dev
       displayName: Dev
       pool: 'Local-TEO-PC'
+      environment: Dev
       variables:
       - name: websitePhysicalPath
         value: '%SystemDrive%\inetpub\wwwroot\$(websiteName)'
