@@ -9,6 +9,7 @@ variables:
   websiteName: simplest_website_ever
   appPoolName: simplest_website_ever
   projectName: simplest_website_ever
+  artifactName: dropping-bombs
 
 pool:
   vmImage: $(osImage)
@@ -42,7 +43,7 @@ stages:
         - task: PublishBuildArtifacts@1
           inputs:
             pathtoPublish: $(build.ArtifactStagingDirectory)
-            ArtifactName: dropping-bombs
+            ArtifactName: $(artifactName)
             publishLocation: Container
   - stage: dev_stage
     displayName: Deploying to Dev Environment
@@ -53,7 +54,7 @@ stages:
           inputs:
             buildType: 'current'
             downloadType: 'single'
-            artifactName: dropping-bombs
+            artifactName: $(artifactName)
             downloadPath: '$(System.ArtifactStagingDirectory)'
         - task: IISWebAppManagementOnMachineGroup@0
           inputs:            
@@ -84,6 +85,6 @@ stages:
         - task: IISWebAppDeploymentOnMachineGroup@0
           inputs:
             WebSiteName: '$(websiteName)'
-            Package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/$(projectName).zip'
+            Package: '$(Pipeline.Workspace)/$(artifactName)/$(buildConfiguration)/$(projectName).zip'
 
 
