@@ -9,7 +9,7 @@ variables:
   websiteName: simplest_website_ever
 
 pool:
-  name: windows-latest
+  vmImage: $(osImage)
 
 stages:
   - stage: build_stage
@@ -43,7 +43,7 @@ stages:
             ArtifactName: dropping-bombs
             publishLocation: Container
   - stage: dev_stage
-    displayName: Download File
+    displayName: Deploying to Dev Environment
     jobs:
       - job: Develop
         steps:
