@@ -85,6 +85,6 @@ stages:
         - task: IISWebAppDeploymentOnMachineGroup@0
           inputs:
             WebSiteName: '$(websiteName)'
-            Package: '$(Pipeline.Workspace)/$(artifactName)/$(buildConfiguration)/$(projectName).zip'
+            Package: '$(System.DefaultWorkingDirectory)\**\*.zip'
 
 
