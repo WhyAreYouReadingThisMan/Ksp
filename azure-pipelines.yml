@@ -1,0 +1,13 @@
+name: sawaid_assignment-$(Date:yyyMMdd)$(Rev:.r)
+
+trigger:
+  - none
+
+variables:
+  buildConfiguration: Release
+  osImage: windows-latest
+
+stages:
+  - stage: build_stage
+    displayName: Build Stage
+    
