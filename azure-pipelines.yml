@@ -49,9 +49,6 @@ stages:
     jobs:
     - deployment: Dev
       displayName: Dev
-      environment: 
-        name: 'Dev'    
-        resourceType: VirtualMachine
       variables:
       - name: websitePhysicalPath
         value: '%SystemDrive%\inetpub\wwwroot\$(websiteName)'
