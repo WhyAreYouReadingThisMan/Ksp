@@ -38,3 +38,14 @@ stages:
             pathtoPublish: $(build.ArtifactStagingDirectory)
             ArtifactName: dropping-bombs
             publishLocation: Container
+  - stage: dev_stage
+    displayName: development environment
+    jobs:
+      - job: Develop
+        steps:
+          - task: DownloadBuildArtifacts@1
+            inputs:
+              buildType: current
+              downloadType: single
+              artifactName: dropping-bombs
+              downloadPath: $(System.AritfactsDirectory)
