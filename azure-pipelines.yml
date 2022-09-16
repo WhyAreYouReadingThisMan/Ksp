@@ -49,6 +49,9 @@ stages:
     displayName: Deploying to Dev Environment
     jobs:
       - job: Deploy
+        variables:
+        - name: websitePhysicalPath
+          value: '%SystemDrive%\inetpub\wwwroot\$(websiteName)'
         steps:
         - task: DownloadBuildArtifacts@1
           inputs:
