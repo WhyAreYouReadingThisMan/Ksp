@@ -51,7 +51,7 @@ stages:
     - deployment: Dev
       displayName: Dev
       pool:
-        name: Local-TEO-PC
+        name: Default
         demands: agent.name -equals TEO-SAWAID
       environment: Dev
       variables:
