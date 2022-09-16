@@ -53,7 +53,7 @@ stages:
           inputs:
             buildType: 'current'
             downloadType: 'single'
-            artifactName: 'drop'
+            artifactName: dropping-bombs
             downloadPath: '$(System.ArtifactStagingDirectory)'
         - task: IISWebAppManagementOnMachineGroup@0
           inputs:            
