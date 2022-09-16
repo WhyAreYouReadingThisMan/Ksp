@@ -51,8 +51,7 @@ stages:
     - deployment: Dev
       displayName: Dev
       environment: 
-        name: 'Dev'    
-        resourceType: VirtualMachine
+        name: 'Local-TEO-PC'
       variables:
       - name: websitePhysicalPath
         value: '%SystemDrive%\inetpub\wwwroot\$(websiteName)'
