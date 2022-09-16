@@ -8,6 +8,9 @@ variables:
   osImage: windows-latest
   websiteName: simplest_website_ever
 
+pool:
+  name: windows-latest
+
 stages:
   - stage: build_stage
     displayName: Build Project
