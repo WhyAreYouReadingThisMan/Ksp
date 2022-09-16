@@ -47,44 +47,43 @@ stages:
   - stage: dev_stage
     displayName: Deploying to Dev Environment
     jobs:
-    - deployment: Dev
-      displayName: Dev
-      variables:
-      - name: websitePhysicalPath
-        value: '%SystemDrive%\inetpub\wwwroot\$(websiteName)'
+      - job: Deploy
+        steps:
+        - task: DownloadBuildArtifacts@1
+          inputs:
+            buildType: 'current'
+            downloadType: 'single'
+            artifactName: 'drop'
+            downloadPath: '$(System.ArtifactStagingDirectory)'
+        - task: IISWebAppManagementOnMachineGroup@0
+          inputs:            
+            IISDeploymentType: 'IISWebsite'
+            ActionIISWebsite: 'CreateOrUpdateWebsite'
+            WebsiteName: '$(websiteName)'
+            WebsitePhysicalPath: '$(websitePhysicalPath)'
+            WebsitePhysicalPathAuth: 'WebsiteUserPassThrough'
+            CreateOrUpdateAppPoolForWebsite: true
+            AppPoolNameForWebsite: '$(appPoolName)'
+            DotNetVersionForWebsite: 'No Managed Code'
+            PipeLineModeForWebsite: 'Integrated'
+            AppPoolIdentityForWebsite: 'ApplicationPoolIdentity'
+            AddBinding: true
+            Bindings: |
+                {
+                    bindings:[
+                        {
+                            "protocol":"http",
+                            "ipAddress":"",
+                            "hostname":"four-twenty",
+                            "port":"420",
+                            "sslThumbprint":"",
+                            "sniFlag":false
+                        }
+                    ]
+                }
+        - task: IISWebAppDeploymentOnMachineGroup@0
+          inputs:
+            WebSiteName: '$(websiteName)'
+            Package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/$(projectName).zip'
 
-      strategy:
-        runOnce:
-          deploy:
-            steps: 
-            - task: IISWebAppManagementOnMachineGroup@0
-              inputs:            
-                IISDeploymentType: 'IISWebsite'
-                ActionIISWebsite: 'CreateOrUpdateWebsite'
-                WebsiteName: '$(websiteName)'
-                WebsitePhysicalPath: '$(websitePhysicalPath)'
-                WebsitePhysicalPathAuth: 'WebsiteUserPassThrough'
-                CreateOrUpdateAppPoolForWebsite: true
-                AppPoolNameForWebsite: '$(appPoolName)'
-                DotNetVersionForWebsite: 'No Managed Code'
-                PipeLineModeForWebsite: 'Integrated'
-                AppPoolIdentityForWebsite: 'ApplicationPoolIdentity'
-                AddBinding: true
-                Bindings: |
-                    {
-                        bindings:[
-                            {
-                                "protocol":"http",
-                                "ipAddress":"",
-                                "hostname":"four-twenty",
-                                "port":"420",
-                                "sslThumbprint":"",
-                                "sniFlag":false
-                            }
-                        ]
-                    }
-            - task: IISWebAppDeploymentOnMachineGroup@0
-              inputs:
-                WebSiteName: '$(websiteName)'
-                Package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/$(projectName).zip'
 
