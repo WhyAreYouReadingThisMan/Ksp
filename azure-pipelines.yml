@@ -55,20 +55,18 @@ stages:
               artifactName: dropping-bombs
               downloadPath: $(System.AritfactsDirectory)
           - task: IISWebAppManagementOnMachineGroup@0
-            displayName: IIS Web Application Manage
             inputs:
               EnableIIS: true
               IISDeploymentType: 'IISWebsite'
               ActionIISWebsite: 'CreateOrUpdateWebsite'
-              WebsiteName: '$(websiteName)'
+              WebsiteName: 'HeheHoho'
               WebsitePhysicalPath: '%SystemDrive%\inetpub\wwwroot'
               WebsitePhysicalPathAuth: 'WebsiteUserPassThrough'
               AddBinding: true
               Bindings: 'http/All Unassigned:69:sixty-nine'
+          
           - task: IISWebAppDeploymentOnMachineGroup@0
-            displayName: 'IIS Web App Deploy'
             inputs:
-              WebSiteName: '$(websiteName)'
-              TakeAppOfflineFlag: True
-              XmlVariableSubstitution: True
+              WebSiteName: 'HeheHoho'
+              Package: '$(System.DefaultWorkingDirectory)\**\*.zip'
 
