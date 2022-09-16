@@ -48,6 +48,9 @@ stages:
   - stage: dev_stage
     displayName: Deploying to Dev Environment
     jobs:
+      - deployment: 
+        environment: 
+          name: 'Local-TEO-PC'
       - job: Deploy
         variables:
         - name: websitePhysicalPath
