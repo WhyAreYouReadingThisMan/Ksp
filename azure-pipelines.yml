@@ -48,49 +48,52 @@ stages:
   - stage: dev_stage
     displayName: Deploying to Dev Environment
     jobs:
-      - deployment: 
-        environment: 
-          name: 'Local-TEO-PC'
-      - job: Deploy
-        variables:
-        - name: websitePhysicalPath
-          value: '%SystemDrive%\inetpub\wwwroot\$(websiteName)'
-        steps:
-        - task: DownloadBuildArtifacts@1
-          inputs:
-            buildType: 'current'
-            downloadType: 'single'
-            artifactName: $(artifactName)
-            downloadPath: '$(System.ArtifactStagingDirectory)'
-        - task: IISWebAppManagementOnMachineGroup@0
-          inputs:            
-            IISDeploymentType: 'IISWebsite'
-            ActionIISWebsite: 'CreateOrUpdateWebsite'
-            WebsiteName: '$(websiteName)'
-            WebsitePhysicalPath: '$(websitePhysicalPath)'
-            WebsitePhysicalPathAuth: 'WebsiteUserPassThrough'
-            CreateOrUpdateAppPoolForWebsite: true
-            AppPoolNameForWebsite: '$(appPoolName)'
-            DotNetVersionForWebsite: 'No Managed Code'
-            PipeLineModeForWebsite: 'Integrated'
-            AppPoolIdentityForWebsite: 'ApplicationPoolIdentity'
-            AddBinding: true
-            Bindings: |
-                {
-                    bindings:[
-                        {
-                            "protocol":"http",
-                            "ipAddress":"",
-                            "hostname":"four-twenty",
-                            "port":"420",
-                            "sslThumbprint":"",
-                            "sniFlag":false
-                        }
-                    ]
-                }
-        - task: IISWebAppDeploymentOnMachineGroup@0
-          inputs:
-            WebSiteName: '$(websiteName)'
-            Package: '$(System.DefaultWorkingDirectory)\**\*.zip'
+    - deployment: Dev
+      displayName: Dev
+      environment: 
+        name: 'Dev'    
+        resourceType: VirtualMachine
+      variables:
+      - name: websitePhysicalPath
+        value: '%SystemDrive%\inetpub\wwwroot\$(websiteName)'
 
-
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: DownloadBuildArtifacts@1
+              inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: $(artifactName)
+                downloadPath: '$(System.ArtifactStagingDirectory)'
+            - task: IISWebAppManagementOnMachineGroup@0
+              inputs:            
+                IISDeploymentType: 'IISWebsite'
+                ActionIISWebsite: 'CreateOrUpdateWebsite'
+                WebsiteName: '$(websiteName)'
+                WebsitePhysicalPath: '$(websitePhysicalPath)'
+                WebsitePhysicalPathAuth: 'WebsiteUserPassThrough'
+                CreateOrUpdateAppPoolForWebsite: true
+                AppPoolNameForWebsite: '$(appPoolName)'
+                DotNetVersionForWebsite: 'No Managed Code'
+                PipeLineModeForWebsite: 'Integrated'
+                AppPoolIdentityForWebsite: 'ApplicationPoolIdentity'
+                AddBinding: true
+                Bindings: |
+                    {
+                        bindings:[
+                            {
+                                "protocol":"http",
+                                "ipAddress":"",
+                                "hostname":"four-twenty",
+                                "port":"420",
+                                "sslThumbprint":"",
+                                "sniFlag":false
+                            }
+                        ]
+                    }
+            - task: IISWebAppDeploymentOnMachineGroup@0
+              inputs:
+                WebSiteName: '$(websiteName)'
+                Package: '$(System.DefaultWorkingDirectory)\**\*.zip'
