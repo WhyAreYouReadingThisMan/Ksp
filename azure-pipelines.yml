@@ -10,4 +10,31 @@ variables:
 stages:
   - stage: build_stage
     displayName: Build Stage
-    
+    jobs:
+      - job: Build
+        steps:
+        - task: DotNetCoreCLI@2
+          displayName: dotnet restore
+          inputs:
+            command: restore
+            projects: "**/*.csproj"
+
+        - task: DotNetCoreCLI@2
+          displayName: dotnet build
+          inputs:
+            command: build
+            projects: "**/*.csproj"
+            arguments: --configuration $(buildConfiguration)
+
+        - task: DotNetCoreCLI@2
+          displayName: dotnet publish
+          inputs:
+            command: publish
+            publishWebProjects: true
+            arguments: -c $(buildConfiguration) -o $(build.ArtifactStagingDirectory)
+
+        - task: PublishBuildArtifacts@1
+          inputs:
+            pathtoPublish: $(build.ArtifactStagingDirectory)
+            ArtifactName: dropping-bombs
+            publishLocation: Container
